@@ -1,0 +1,17 @@
+{
+  "name": "new-march",
+  "version": "1.0.0",
+  "description": "Backend ",
+  "keywords": [
+    "Javascript",
+    "express",
+    "mongoDB"
+  ],
+  "license": "ISC",
+  "author": "Dinesh kumar",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
