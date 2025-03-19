@@ -10,7 +10,9 @@ const userSchema = new Schema({
         unique: true,
         lowercase: true,
         trim: true,
-        index: true
+        index: true,
+        min: 10,
+        max: 20
     },
     email: {
         type: String,
@@ -23,7 +25,9 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        index: true
+        index: true,
+        min: 5,
+        max: 15
     },
     avatar: {
         type: String,
@@ -41,8 +45,9 @@ const userSchema = new Schema({
     ],
     password: {
         type: String,
-        required: [true, 'password is required']
+        required: [true, 'password is required'],
     },
+    
     refreshToken: {
         type: String
     }

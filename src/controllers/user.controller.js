@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
+import {validateSchemaUpdatae} from "../utils/validation.js"
 import fs from 'fs';
 
 const generateAccessAndRefreshTokens = async (userId) => {
@@ -23,6 +24,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
     try {
+        validateSchemaUpdatae(req);
         const { fullName, email, username, password } = req.body;
         // console.log("email", email);
 
