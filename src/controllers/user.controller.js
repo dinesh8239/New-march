@@ -8,7 +8,7 @@ import fs from 'fs';
 import mongoose from "mongoose"
 import { pipeline } from "stream"
 
-const generateAccessAndRefreshTokens = async (userId) => {
+export const generateAccessAndRefreshTokens = async (userId) => {
     try {
         const user = await User.findById(userId)
         const accessToken = user.generateAccessToken()
@@ -24,7 +24,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
     }
 }
 
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
     try {
         validateSchemaUpdatae(req);
         const { fullName, email, username, password } = req.body;
@@ -92,7 +92,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
     try {
         const { email, password, username } = req.body
 
@@ -149,7 +149,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 })
 
-const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
@@ -176,7 +176,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 })
 
-const refreshAccessToken = asyncHandler(async (req, res) => {
+export const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const incomingRefreshToken = req.cookies.
         refreshToken || req.body.refreshToken
@@ -226,7 +226,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 })
 
-const changeCurrentPassword = asyncHandler(async (req, res) => {
+export const changeCurrentPassword = asyncHandler(async (req, res) => {
 
     const { oldPassword, newPassword } = req.body
 
@@ -248,13 +248,13 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 })
 
-const getCurrentUser = asyncHandler(async (req, res) => {
+export const getCurrentUser = asyncHandler(async (req, res) => {
     return res
         .status(200)
         .json(200, req.user, "current user fetched successfully")
 })
 
-const updateAccountDetails = asyncHandler(async (req, res) => {
+export const updateAccountDetails = asyncHandler(async (req, res) => {
 
     const { fullName, email } = req.body
 
@@ -278,7 +278,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, user, "Account updated successfully"))
 })
 
-const updateUserAvatar = asyncHandler(async (req, res) => {
+export const updateUserAvatar = asyncHandler(async (req, res) => {
 
     const avatarLocalPath = req.file?.path
 
@@ -311,7 +311,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 })
 
-const updateUserCoverImage = asyncHandler(async (req, res) => {
+export const updateUserCoverImage = asyncHandler(async (req, res) => {
 
     const coverImageLocalPath = req.file?.path
 
@@ -344,7 +344,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
 
 })
 
-const getUserChannelProfile = asyncHandler(async (reqx, res) => {
+export const getUserChannelProfile = asyncHandler(async (reqx, res) => {
     const { username } = req.params;
 
     if (!username?.trim()) {
@@ -415,14 +415,14 @@ const getUserChannelProfile = asyncHandler(async (reqx, res) => {
     if (!channel?.length) {
         throw new ApiError(404, "channel does not exists")
     }
-    
+
     return res
         .status(200)
         .json(new ApiResponse(200, channel[0], "channel profile fetched successfully"))
-    
+
 })
 
-const getwatchHistory = asyncHandler(async (req, res) => {
+export const getwatchHistory = asyncHandler(async (req, res) => {
     const user = await user.aggregate([
         {
             $match: {
@@ -443,17 +443,17 @@ const getwatchHistory = asyncHandler(async (req, res) => {
                             foreignField: "_id",
                             as: "owner",
                             pipeline: [
-                                 {
+                                {
                                     $project: {
                                         fullName: 1,
                                         avatar: 1
                                     }
-                                 }
+                                }
                             ]
                         }
                     },
                     {
-                        $addFields:{
+                        $addFields: {
                             owner: {
                                 $first: "$owner"
                             }
@@ -465,24 +465,24 @@ const getwatchHistory = asyncHandler(async (req, res) => {
     ])
 
     return res
-    .status(200)
-    .json(new ApiResponse(200, user[0].watchHistory,
-        "Watch history fetched successfully"
-    ))
+        .status(200)
+        .json(new ApiResponse(200, user[0].watchHistory,
+            "Watch history fetched successfully"
+        ))
 })
 
 
 
-export {
-    refreshAccessToken,
-    registerUser,
-    loginUser,
-    logoutUser,
-    changeCurrentPassword,
-    updateAccountDetails,
-    getCurrentUser,
-    updateUserAvatar,
-    updateUserCoverImage,
-    getUserChannelProfile,
-    getwatchHistory
-};
+// export {
+//     refreshAccessToken,
+//     registerUser,
+//     loginUser,
+//     logoutUser,
+//     changeCurrentPassword,
+//     updateAccountDetails,
+//     getCurrentUser,
+//     updateUserAvatar,
+//     updateUserCoverImage,
+//     getUserChannelProfile,
+//     getwatchHistory
+// };
